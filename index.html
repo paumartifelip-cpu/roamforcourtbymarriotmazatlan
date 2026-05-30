@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roam × Courtyard by Marriott Mazatlán – Propuesta de Innovación</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #ffffff;
+      --bg2: #f8f9fc;
+      --border: #e2e8f0;
+      --primary: #002d62; /* Navy azul corporativo Marriott */
+      --primary-dark: #001f44;
+      --accent: #c5a880; /* Dorado elegante/cálido atardecer */
+      --accent-dark: #b3946b;
+      --text: #1e293b; /* Slate dark */
+      --muted: #64748b;
+      --light: #94a3b8;
+      --green: #10b981;
+      --r: 12px;
+      --ease: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    
+    html { scroll-behavior: smooth; overflow-x: hidden; max-width: 100%; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      max-width: 100%;
+      overflow-wrap: break-word;
+    }
+    
+    h1, h2, h3, h4, .logo {
+      font-family: 'Outfit', sans-serif;
+      color: var(--primary);
+    }
+
+    /* ── REVEAL ANIMATIONS ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ── HEADER & NAVIGATION ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 3rem;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo-container { display: flex; align-items: center; gap: 0.5rem; }
+    .logo { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.5px; }
+    .logo span { color: var(--accent); font-weight: 400; }
+    
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.875rem; font-weight: 500;
+      position: relative; padding-bottom: 4px; transition: color 0.25s var(--ease);
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+      background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s var(--ease);
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    
+    .nav-cta {
+      background: var(--primary); color: #fff; padding: 0.65rem 1.4rem;
+      border-radius: var(--r); font-size: 0.82rem; font-weight: 700;
+      text-decoration: none; border: 1.5px solid var(--primary);
+      transition: all 0.25s var(--ease);
+    }
+    .nav-cta:hover { background: transparent; color: var(--primary); transform: translateY(-1px); }
+
+    /* ── HERO SECTION ── */
+    .hero {
+      min-height: 95vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 9rem 2rem 5rem; position: relative; overflow: hidden;
+      background: radial-gradient(circle at top right, rgba(197, 168, 128, 0.08) 0%, rgba(255,255,255,0) 60%),
+                  radial-gradient(circle at bottom left, rgba(0, 45, 98, 0.04) 0%, rgba(255,255,255,0) 60%);
+    }
+    
+    .hero-decorations { position: absolute; inset: 0; pointer-events: none; }
+    .hd-item {
+      position: absolute; font-size: 1.5rem; padding: 12px; background: #fff;
+      border: 1px solid var(--border); border-radius: 50%;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+      animation: gentle-bobble 6s ease-in-out infinite alternate;
+    }
+    @keyframes gentle-bobble {
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(-12px) rotate(5deg); }
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(0, 45, 98, 0.05); border: 1px solid rgba(0, 45, 98, 0.1);
+      color: var(--primary); padding: 0.45rem 1.1rem; border-radius: 50px;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em;
+      text-transform: uppercase; margin-bottom: 2rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800;
+      line-height: 1.1; letter-spacing: -1.5px; max-width: 900px;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 em {
+      font-style: normal; color: var(--accent);
+      background: linear-gradient(135deg, var(--primary) 30%, var(--accent) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p { max-width: 650px; font-size: 1.1rem; color: var(--muted); margin: 0 auto 2.5rem; line-height: 1.7; }
+    .hero p strong { color: var(--primary); }
+    
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn-primary {
+      background: var(--primary); color: #fff; padding: 0.95rem 2.2rem;
+      border-radius: var(--r); font-size: 0.95rem; font-weight: 700;
+      text-decoration: none; display: inline-block; border: 1.5px solid var(--primary);
+      transition: all 0.25s var(--ease);
+      box-shadow: 0 10px 25px rgba(0, 45, 98, 0.15);
+    }
+    .btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0, 45, 98, 0.25); }
+    
+    .btn-outline {
+      background: transparent; color: var(--primary); border: 1.5px solid var(--primary);
+      padding: 0.95rem 2.2rem; border-radius: var(--r); font-size: 0.95rem; font-weight: 700;
+      text-decoration: none; display: inline-block;
+      transition: all 0.25s var(--ease);
+    }
+    .btn-outline:hover { background: rgba(0, 45, 98, 0.03); transform: translateY(-2px); }
+
+    /* ── TRUSTED BY / MARQUEE ── */
+    .trusted-section {
+      padding: 3rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: #fff; overflow: hidden;
+    }
+    .trusted-label {
+      text-align: center; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.8rem;
+    }
+    .marquee-wrapper {
+      mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    }
+    .marquee-track { display: flex; animation: marquee 35s linear infinite; width: max-content; }
+    .marquee-track:hover { animation-play-state: paused; }
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    
+    .hotel-pill {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.6rem 1.4rem; margin: 0 0.5rem;
+      background: #fff; border: 1.5px solid var(--border); border-radius: 50px;
+      white-space: nowrap; font-size: 0.82rem; font-weight: 600; color: var(--muted);
+      transition: all 0.25s var(--ease);
+    }
+    .hotel-pill.highlight {
+      border-color: var(--accent); color: var(--primary); background: rgba(197, 168, 128, 0.05); font-weight: 700;
+    }
+    .hotel-pill:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.05); }
+    .hotel-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.4; }
+    .hotel-pill.highlight .dot { background: var(--accent); opacity: 1; }
+
+    /* ── PROPOSAL POSITIONING ── */
+    .proposal-tagline {
+      background: var(--primary); color: #fff; padding: 6.5rem 2rem; text-align: center;
+      position: relative;
+    }
+    .proposal-tagline::before {
+      content: ''; position: absolute; inset: 0; opacity: 0.03;
+      background-image: radial-gradient(circle, #fff 10%, transparent 11%);
+      background-size: 20px 20px;
+    }
+    .pos-badge {
+      display: inline-block; border: 1px solid rgba(197, 168, 128, 0.4);
+      background: rgba(197, 168, 128, 0.1); color: var(--accent);
+      padding: 0.35rem 1rem; border-radius: 50px; font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2rem;
+    }
+    .proposal-tagline p {
+      font-size: clamp(1.2rem, 2.8vw, 1.65rem); line-height: 1.7; max-width: 850px; margin: 0 auto;
+      font-weight: 400; color: #f1f5f9;
+    }
+    .proposal-tagline strong { color: var(--accent); font-weight: 700; }
+    .pos-sep { display: block; height: 1.5rem; }
+
+    /* ── WHAT WE OFFER (SERVICES) ── */
+    section { padding: 6.5rem 2rem; }
+    .container { max-width: 1140px; margin: 0 auto; width: 100%; }
+    
+    .section-label {
+      display: inline-block; background: rgba(0, 45, 98, 0.04); border: 1px solid rgba(0, 45, 98, 0.08);
+      color: var(--primary); padding: 0.3rem 1rem; border-radius: 50px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.25rem;
+    }
+    .section-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 0.8rem; }
+    .section-sub { color: var(--muted); font-size: 1.05rem; max-width: 600px; margin-bottom: 3.5rem; }
+    
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .svc-card {
+      background: #fff; border: 1px solid var(--border); border-radius: var(--r);
+      padding: 2.5rem 2rem; display: flex; flex-direction: column; position: relative; overflow: hidden;
+      transition: all 0.35s var(--ease);
+    }
+    .svc-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--ease);
+    }
+    .svc-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0, 45, 98, 0.06);
+      border-color: rgba(197, 168, 128, 0.4);
+    }
+    .svc-card:hover::before { transform: scaleX(1); }
+    .svc-icon { font-size: 2.2rem; margin-bottom: 1.25rem; display: inline-block; transition: transform 0.3s var(--ease); }
+    .svc-card:hover .svc-icon { transform: scale(1.1) rotate(3deg); }
+    .svc-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--primary); }
+    .svc-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+    
+    /* ── VALUE VS VACANCY ── */
+    .value-section { background: var(--bg2); }
+    .value-inner {
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4.5rem; align-items: center;
+    }
+    .value-headline {
+      font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 800;
+      letter-spacing: -1.5px; line-height: 1.15;
+    }
+    .value-headline span { display: block; }
+    .value-headline .cross {
+      text-decoration: line-through; color: var(--light);
+      font-weight: 400; font-size: 0.8em; margin-bottom: 0.5rem;
+    }
+    .value-headline .bold { color: var(--primary); }
+    .value-headline .bold em { font-style: normal; color: var(--accent); }
+    
+    .value-right p { font-size: 1.05rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.8rem; }
+    .value-right strong { color: var(--primary); font-weight: 700; }
+    
+    .value-pills { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .pill {
+      background: #fff; border: 1px solid var(--border);
+      padding: 0.45rem 1.1rem; border-radius: 50px;
+      font-size: 0.8rem; font-weight: 600; color: var(--muted);
+      transition: all 0.25s var(--ease);
+    }
+    .pill:hover { background: var(--primary); border-color: var(--primary); color: #fff; transform: translateY(-2px); }
+
+    /* ── METHOD SECTION ── */
+    .method-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem; margin-top: 3.5rem;
+    }
+    .method-card {
+      background: #fff; padding: 3rem 2rem; border-radius: var(--r);
+      border: 1px solid var(--border); position: relative; overflow: hidden;
+      transition: all 0.4s var(--ease);
+    }
+    .method-card::after {
+      content: ''; position: absolute; inset: 0; background: var(--primary);
+      transform: translateY(101%); transition: transform 0.4s var(--ease); z-index: 0;
+    }
+    .method-card:hover::after { transform: translateY(0); }
+    .method-card:hover .method-letter,
+    .method-card:hover h3,
+    .method-card:hover p { color: rgba(255,255,255,0.95); position: relative; z-index: 1; }
+    .method-card:hover .method-letter { color: rgba(255,255,255,0.08); }
+    
+    .method-letter {
+      font-size: 5rem; font-weight: 900; color: rgba(0, 45, 98, 0.04);
+      line-height: 1; letter-spacing: -3px; margin-bottom: 0.5rem;
+      position: relative; z-index: 1; transition: color 0.3s var(--ease);
+    }
+    .method-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; position: relative; z-index: 1; transition: color 0.3s var(--ease); }
+    .method-card p { font-size: 0.85rem; color: var(--muted); position: relative; z-index: 1; transition: color 0.3s var(--ease); line-height: 1.6; }
+    
+    .method-sub { text-align: center; margin-top: 3rem; font-size: 1.05rem; color: var(--muted); max-width: 650px; margin-left: auto; margin-right: auto; }
+
+    /* ── PROBLEMS & OPPORTUNITIES ── */
+    .problems-section { background: #fff; }
+    .problems-intro { text-align: center; margin-bottom: 3.5rem; }
+    .problems-list { display: flex; flex-direction: column; max-width: 850px; margin: 0 auto; }
+    .prob-row {
+      display: flex; align-items: center; gap: 1.5rem;
+      padding: 1.25rem 0; border-bottom: 1px solid var(--border);
+      transition: all 0.25s var(--ease);
+    }
+    .prob-row:last-child { border-bottom: none; }
+    .prob-row:hover {
+      background: var(--bg2); padding-left: 1.25rem; padding-right: 1.25rem;
+      margin-left: -1.25rem; margin-right: -1.25rem; border-radius: var(--r);
+    }
+    .prob-step {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(0, 45, 98, 0.03); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 800; color: var(--primary);
+      transition: all 0.25s var(--ease);
+    }
+    .prob-row:hover .prob-step { background: var(--accent); border-color: var(--accent); color: var(--primary); }
+    .prob-text { font-size: 1rem; font-weight: 600; color: var(--text); flex: 1; }
+    .prob-solve { font-size: 0.85rem; color: var(--muted); display: block; font-weight: 400; margin-top: 0.2rem; }
+
+    /* ── METRICS / AUTHORITY ── */
+    .authority-section { background: var(--primary); color: #fff; padding: 6.5rem 2rem; text-align: center; position: relative; }
+    .authority-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; margin: 4rem 0; }
+    .auth-stat { text-align: center; }
+    .auth-num { font-size: clamp(2.5rem, 5vw, 4.2rem); font-weight: 800; color: var(--accent); line-height: 1; letter-spacing: -1.5px; }
+    .auth-label { font-size: 0.875rem; color: rgba(255,255,255,0.6); margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .authority-section p { font-size: 1.1rem; color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto; }
+
+    /* ── HOW IT WORKS ── */
+    .how-section { background: var(--bg2); }
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; }
+    .step-card {
+      background: #fff; border: 1px solid var(--border); border-radius: var(--r);
+      padding: 2.5rem 2rem; position: relative; overflow: hidden;
+      transition: all 0.3s var(--ease);
+    }
+    .step-card:hover { transform: translateY(-5px); box-shadow: 0 16px 35px rgba(0, 45, 98, 0.05); border-color: var(--accent); }
+    .step-num {
+      font-size: 3.5rem; font-weight: 900; color: rgba(0, 45, 98, 0.03);
+      line-height: 1; margin-bottom: 1.25rem; transition: color 0.3s var(--ease);
+    }
+    .step-card:hover .step-num { color: rgba(197, 168, 128, 0.15); }
+    .step-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem; color: var(--primary); }
+    .step-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── QUOTES / PHRASES ── */
+    .quotes-section { background: #fff; padding: 5rem 2rem; }
+    .quotes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+    .quote-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r);
+      padding: 2.2rem 2rem; position: relative; overflow: hidden;
+      transition: all 0.3s var(--ease);
+    }
+    .quote-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 10px 25px rgba(0,0,0,0.03); }
+    .quote-mark { font-size: 3.5rem; color: rgba(197, 168, 128, 0.25); line-height: 0.4; margin-bottom: 1.25rem; font-family: 'Outfit', sans-serif; }
+    .quote-card p { font-size: 1rem; font-weight: 500; color: var(--primary); line-height: 1.6; font-style: italic; }
+
+    /* ── OUR ROUTE / PRICE TABLE ── */
+    .ruta-section { background: #fff; border-top: 1px solid var(--border); }
+    .ruta-top {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4.5rem; align-items: start; margin-bottom: 4rem;
+    }
+    .ruta-desc p { font-size: 1.05rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.25rem; }
+    .ruta-badge-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.75rem; }
+    .ruta-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: #ecfdf5; border: 1px solid #d1fae5; color: var(--green);
+      padding: 0.5rem 1.2rem; border-radius: 50px;
+      font-size: 0.8rem; font-weight: 700;
+    }
+    .ruta-badge.accent { background: rgba(197, 168, 128, 0.08); border-color: rgba(197, 168, 128, 0.2); color: var(--primary); }
+
+    /* Price table */
+    .price-table-title {
+      font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--primary); margin-bottom: 1.25rem;
+    }
+    .price-table { width: 100%; border-collapse: collapse; }
+    .price-table thead tr { border-bottom: 2px solid var(--primary); }
+    .price-table thead th { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); padding: 0.85rem 0; text-align: left; }
+    .price-table Alexander thead th:last-child { text-align: right; }
+    .price-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.2s var(--ease); }
+    .price-table tbody tr:last-child { border-bottom: none; }
+    .price-table tbody tr:hover { background: var(--bg2); }
+    .price-table td { padding: 1.2rem 0; font-size: 0.9rem; vertical-align: middle; }
+    .price-table td:first-child { font-weight: 600; color: var(--primary); padding-right: 1.5rem; }
+    .price-table td:last-child { text-align: right; font-weight: 800; font-size: 1rem; color: var(--primary); white-space: nowrap; }
+    .price-table tr.pack-row td { color: var(--primary); }
+    .price-table tr.pack-row td:first-child { font-weight: 800; }
+    .price-table tr.pack-row td:last-child { font-size: 1.15rem; color: var(--accent-dark); }
+
+    .ruta-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem; flex-wrap: wrap;
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 2rem 2.5rem; margin-top: 3.5rem;
+    }
+    .ruta-footer-left { display: flex; align-items: center; gap: 1.25rem; }
+    .ruta-footer-icon { font-size: 2.2rem; }
+    .ruta-footer h4 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.25rem; color: var(--primary); }
+    .ruta-footer p { font-size: 0.88rem; color: var(--muted); }
+
+    /* ── CTA SECTION ── */
+    .cta-section { background: var(--bg2); text-align: center; padding: 7.5rem 2rem; border-top: 1px solid var(--border); }
+    .cta-section h2 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 1rem; }
+    .cta-section p { color: var(--muted); font-size: 1.1rem; margin: 0 auto 2.5rem; max-width: 580px; }
+    .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    
+    .btn-wa {
+      background: #25d366; color: #fff; padding: 0.95rem 2.2rem;
+      border-radius: var(--r); font-size: 0.95rem; font-weight: 700;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 0.75rem;
+      box-shadow: 0 10px 25px rgba(37,211,102,0.25);
+      transition: all 0.25s var(--ease);
+    }
+    .btn-wa:hover { background: #20ba59; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(37,211,102,0.35); }
+
+    /* ── HAMBURGER & MOBILE MENU ── */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px; background: none; border: none;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px; background: var(--primary);
+      border-radius: 2px; transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; position: fixed; top: 68px; left: 0; right: 0; z-index: 99;
+      background: rgba(255,255,255,0.98); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      flex-direction: column; padding: 1.5rem; gap: 0.5rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--primary); text-decoration: none; font-size: 1rem; font-weight: 600;
+      padding: 0.85rem 0; border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:last-child { border-bottom: none; margin-top: 0.75rem; }
+    .mobile-menu .mob-cta {
+      background: var(--primary); color: #fff; border-radius: var(--r);
+      padding: 0.9rem; text-align: center; font-weight: 700;
+    }
+
+    /* ── FOOTER ── */
+    footer { background: var(--primary); color: rgba(255,255,255,0.6); padding: 4.5rem 2rem 3rem; text-align: center; }
+    .footer-logo { font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 0.75rem; }
+    .footer-logo span { color: var(--accent); font-weight: 400; }
+    .footer-desc { font-size: 0.88rem; max-width: 450px; margin: 0 auto 2rem; line-height: 1.6; }
+    .footer-links { display: flex; gap: 2rem; justify-content: center; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy { font-size: 0.8rem; color: rgba(255,255,255,0.3); border-top: 1px solid rgba(255,255,255,0.08); padding-top: 2rem; }
+
+    /* ── MEDIA QUERIES (RESPONSIVE) ── */
+    @media (max-width: 1024px) {
+      .method-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      
+      section { padding: 4rem 1.5rem; }
+      .hero { padding: 8rem 1.5rem 4rem; }
+      .hd-item { display: none; }
+      
+      .value-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .ruta-top { grid-template-columns: 1fr; gap: 3rem; }
+      
+      .authority-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .ruta-footer { flex-direction: column; align-items: stretch; padding: 1.5rem; text-align: center; }
+      .ruta-footer-left { flex-direction: column; text-align: center; }
+      
+      .price-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r); }
+      .price-table { min-width: 450px; }
+    }
+
+    @media (max-width: 480px) {
+      .method-grid { grid-template-columns: 1fr; }
+      .cta-btns { flex-direction: column; align-items: stretch; }
+      .cta-btns a { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo-container">
+      <div class="logo">Roam <span>× Courtyard Mazatlán</span></div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#propuesta">La propuesta</a></li>
+      <li><a href="#que-ofrecemos">Qué ofrecemos</a></li>
+      <li><a href="#metodo">Método ROAM</a></li>
+      <li><a href="#ruta">Modelo de Intercambio</a></li>
+    </ul>
+    <a href="https://wa.me/34601108311?text=Hola%20Pau%2C%20vi%20la%20propuesta%20de%20Roam%20para%20el%20Courtyard%20by%20Marriott%20Mazatl%C3%A1n" class="nav-cta" target="_blank">Revisar Disponibilidad</a>
+    <button class="hamburger" id="hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#propuesta" onclick="closeMob()">La propuesta</a>
+    <a href="#que-ofrecemos" onclick="closeMob()">Qué ofrecemos</a>
+    <a href="#metodo" onclick="closeMob()">Método ROAM</a>
+    <a href="#ruta" onclick="closeMob()">Modelo de Intercambio</a>
+    <a href="https://wa.me/34601108311?text=Hola%20Pau%2C%20vi%20la%20propuesta%20de%20Roam%20para%20el%20Courtyard%20by%20Marriott%20Mazatl%C3%A1n" class="mob-cta" target="_blank">Contactar a Pau Martí</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-decorations" aria-hidden="true">
+      <div class="hd-item" style="top: 15%; left: 10%; animation-delay: 0s;">🏨</div>
+      <div class="hd-item" style="top: 25%; right: 12%; animation-delay: -2s;">🤖</div>
+      <div class="hd-item" style="bottom: 20%; left: 8%; animation-delay: -4s;">⭐</div>
+      <div class="hd-item" style="bottom: 15%; right: 10%; animation-delay: -1s;">🌊</div>
+      <div class="hd-item" style="top: 50%; left: 3%; animation-delay: -3s;">🔑</div>
+    </div>
+
+    <div class="hero-badge reveal">⚡ Alianza de Innovación y Tecnología</div>
+    <h1 class="reveal reveal-delay-1">Convierte habitaciones libres<br/>en <em>inteligencia artificial</em> para tu hotel</h1>
+    <p class="reveal reveal-delay-2">
+      Propuesta exclusiva para la dirección general y marketing del <strong>Courtyard by Marriott Mazatlán Beach Resort</strong>. Automatización de procesos, contenido estratégico y capacitación en IA para tu equipo, sin costo monetario.
+    </p>
+    <div class="hero-btns reveal reveal-delay-3">
+      <a href="https://wa.me/34601108311?text=Hola%20Pau%2C%20vi%20la%20propuesta%20de%20Roam%20para%20el%20Courtyard%20by%20Marriott%20Mazatl%C3%A1n" class="btn-primary" target="_blank">Presentar a Dirección</a>
+      <a href="#propuesta" class="btn-outline">Ver detalles del intercambio</a>
+    </div>
+  </section>
+
+  <!-- TRUSTED BY / MARQUEE -->
+  <div class="trusted-section">
+    <p class="trusted-label">Hoteles y marcas en el radar de nuestra comunidad</p>
+    <div class="marquee-wrapper">
+      <div class="marquee-track">
+        <span class="hotel-pill highlight"><span class="dot"></span>Courtyard Marriott Mazatlán</span>
+        <span class="hotel-pill"><span class="dot"></span>Viajero Hostels</span>
+        <span class="hotel-pill"><span class="dot"></span>Masaya Hotels</span>
+        <span class="hotel-pill"><span class="dot"></span>Los Patios Medellín</span>
+        <span class="hotel-pill"><span class="dot"></span>Font Andorra Hotel</span>
+        <span class="hotel-pill highlight"><span class="dot"></span>Marriott Bonvoy Ecosystem</span>
+        <span class="hotel-pill"><span class="dot"></span>Ryad Layla Rouge</span>
+        <span class="hotel-pill"><span class="dot"></span>Ostello Bello</span>
+        <span class="hotel-pill"><span class="dot"></span>La Controra Nápoles</span>
+        
+        <!-- Duplicate for marquee loop -->
+        <span class="hotel-pill highlight"><span class="dot"></span>Courtyard Marriott Mazatlán</span>
+        <span class="hotel-pill"><span class="dot"></span>Viajero Hostels</span>
+        <span class="hotel-pill"><span class="dot"></span>Masaya Hotels</span>
+        <span class="hotel-pill"><span class="dot"></span>Los Patios Medellín</span>
+        <span class="hotel-pill"><span class="dot"></span>Font Andorra Hotel</span>
+        <span class="hotel-pill highlight"><span class="dot"></span>Marriott Bonvoy Ecosystem</span>
+        <span class="hotel-pill"><span class="dot"></span>Ryad Layla Rouge</span>
+        <span class="hotel-pill"><span class="dot"></span>Ostello Bello</span>
+        <span class="hotel-pill"><span class="dot"></span>La Controra Nápoles</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- POSITIONING -->
+  <div class="proposal-tagline" id="propuesta">
+    <div class="container">
+      <div class="pos-badge reveal">Modelo de Negocio</div>
+      <p class="reveal reveal-delay-1">
+        <strong>Roam no es una colaboración de influencers tradicionales.</strong>
+        <span class="pos-sep"></span>
+        Es un <strong>intercambio inteligente corporativo</strong>.
+        <span class="pos-sep"></span>
+        Ustedes nos facilitan hospedaje en habitaciones libres durante periodos específicos.<br/>
+        Nosotros aportamos <strong>capacitación en Inteligencia Artificial, automatizaciones operativas y estrategias de conversión directa</strong>.
+      </p>
+    </div>
+  </div>
+
+  <!-- WHAT CAN YOUR HOTEL GET -->
+  <section class="services-section" id="que-ofrecemos">
+    <div class="container">
+      <div class="section-label reveal">Pilares de Colaboración</div>
+      <h2 class="section-title reveal reveal-delay-1">¿Qué gana el Courtyard Mazatlán?</h2>
+      <p class="section-sub reveal reveal-delay-2">Cuatro soluciones de gran impacto diseñadas a la medida del resort y sus retos en la Zona Dorada.</p>
+      
+      <div class="services-grid">
+        <div class="svc-card reveal reveal-delay-1">
+          <span class="svc-icon">🧠</span>
+          <h3>Formación en IA para el Equipo</h3>
+          <p>Capacitamos al personal (Recepción, Reservas y Marketing) en herramientas de IA Generativa. Aprenden a responder al instante reseñas complejas de TripAdvisor y Marriott Bonvoy y a redactar e-mails bilingües profesionales reduciendo tiempos un 70%.</p>
+        </div>
+        <div class="svc-card reveal reveal-delay-2">
+          <span class="svc-icon">⚡</span>
+          <h3>Automatizaciones Operativas</h3>
+          <p>Diseñamos flujos automatizados simples para WhatsApp y DMs. Redirigimos preguntas repetitivas (horarios del restaurante Don Joaquin, cotización de salones, políticas de piscina y Day Passes) liberando tiempo de tu personal de recepción.</p>
+        </div>
+        <div class="svc-card reveal reveal-delay-3">
+          <span class="svc-icon">📈</span>
+          <h3>Estrategia de Conversión Directa</h3>
+          <p>Analizamos los canales de comunicación y puntos de contacto del hotel para sugerir ajustes de copy, velocidad y flujo que incentiven al huésped a reservar directamente en el sitio oficial de Marriott en lugar de plataformas de comisiones altas (Booking, Expedia).</p>
+        </div>
+        <div class="svc-card reveal reveal-delay-4">
+          <span class="svc-icon">🎬</span>
+          <h3>Dirección de Contenido Localizado</h3>
+          <p>Creamos guiones, estructuras y estrategias de contenido vertical optimizado para redes sociales. Destacamos la espectacular piscina infinita, la playa de Mazatlán y las amenidades del resort para conectar emocionalmente con el turista nacional e internacional.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NO VENIMOS DE VACACIONES -->
+  <section class="value-section">
+    <div class="container">
+      <div class="value-inner">
+        <div>
+          <div class="section-label reveal">Diferencia Clave</div>
+          <div class="value-headline reveal reveal-delay-1">
+            <span class="cross">No venimos de vacaciones a Mazatlán.</span>
+            <span class="bold">Venimos a <em>inyectar valor</em> tecnológico.</span>
+          </div>
+        </div>
+        <div class="value-right reveal reveal-delay-2">
+          <p>Nos alojamos en el resort, <strong>analizamos los flujos actuales</strong> y trabajamos de la mano con su equipo para dejar implementadas mejoras en comunicación, atención al cliente y optimización del tiempo de los colaboradores.</p>
+          <p>Antes de nuestro check-out, entregamos <strong>resultados y automatizaciones funcionales</strong>. Sin contratos largos, sin facturas pesadas.</p>
+          <div class="value-pills">
+            <span class="pill">Equipo capacitado</span>
+            <span class="pill">Respuestas automatizadas</span>
+            <span class="pill">Foco en Venta Directa</span>
+            <span class="pill">Ahorro en Comisiones</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MÉTODO ROAM -->
+  <section class="method-section" id="metodo">
+    <div class="container">
+      <div style="text-align: center;">
+        <div class="section-label reveal">Metodología</div>
+        <h2 class="section-title reveal reveal-delay-1">El Método ROAM</h2>
+        <p class="section-sub reveal reveal-delay-2" style="margin: 0 auto 3rem;">Una transición fluida de cuatro fases estructuradas para garantizar entregables reales al hotel.</p>
+      </div>
+      
+      <div class="method-grid reveal reveal-delay-1">
+        <div class="method-card">
+          <div class="method-letter">R</div>
+          <h3>Revisión de Procesos</h3>
+          <p>Estudiamos el estado de su comunicación digital, rapidez de respuestas a reservas, gestión de opiniones y redes sociales antes de llegar.</p>
+        </div>
+        <div class="method-card">
+          <div class="method-letter">O</div>
+          <h3>Orden y Prioridad</h3>
+          <p>Identificamos las 3 oportunidades de mayor impacto en tiempo/dinero que se pueden resolver en días. Coordinamos con su dirección.</p>
+        </div>
+        <div class="method-card">
+          <div class="method-letter">A</div>
+          <h3>Aplicación Práctica</h3>
+          <p>Instalamos las herramientas de IA acordadas, estructuramos flujos y entrenamos en directo a su staff operativo y de marketing.</p>
+        </div>
+        <div class="method-card">
+          <div class="method-letter">M</div>
+          <h3>Medición y Cierre</h3>
+          <p>Entregamos reportes y sistemas listos, junto con pautas claras para que su equipo continúe operando los flujos de forma independiente.</p>
+        </div>
+      </div>
+      <p class="method-sub reveal">Un ciclo enfocado 100% en la aplicabilidad operativa y la eficiencia digital del resort.</p>
+    </div>
+  </section>
+
+  <!-- PROBLEMS SECTION -->
+  <section class="problems-section">
+    <div class="container">
+      <div class="problems-intro">
+        <div class="section-label reveal">Retos y Soluciones</div>
+        <h2 class="section-title reveal reveal-delay-1">¿Qué retos atacamos primero?</h2>
+        <p class="section-sub reveal reveal-delay-2" style="margin: 0 auto;">Puntos débiles comunes en la hospitalidad de Mazatlán que convertimos en ventajas operativas.</p>
+      </div>
+      
+      <div class="problems-list reveal">
+        <div class="prob-row">
+          <div class="prob-step">01</div>
+          <div class="prob-text">
+            Dependencia excesiva de Booking y OTAs
+            <span class="prob-solve">Lo mitigamos potenciando el copy conversacional y la experiencia rápida en canales propios del hotel.</span>
+          </div>
+        </div>
+        <div class="prob-row">
+          <div class="prob-step">02</div>
+          <div class="prob-text">
+            Pérdida de prospectos por lentitud en WhatsApp o Messenger
+            <span class="prob-solve">Instalamos plantillas inteligentes y semiautomatizaciones que resuelven dudas de Day Pass y tarifas en minutos.</span>
+          </div>
+        </div>
+        <div class="prob-row">
+          <div class="prob-step">03</div>
+          <div class="prob-text">
+            Tiempo excesivo redactando respuestas a opiniones y comentarios
+            <span class="prob-solve">Creamos un asistente personalizado de IA que genera respuestas educadas, bilingües y alineadas a la marca en segundos.</span>
+          </div>
+        </div>
+        <div class="prob-row">
+          <div class="prob-step">04</div>
+          <div class="prob-text">
+            Capacitación tecnológica pendiente en el equipo
+            <span class="prob-solve">Brindamos talleres prácticos y herramientas útiles de Inteligencia Artificial que aplican desde el primer día.</span>
+          </div>
+        </div>
+        <div class="prob-row">
+          <div class="prob-step">05</div>
+          <div class="prob-text">
+            Habitaciones libres en temporada baja que no generan retorno
+            <span class="prob-solve">Las convertimos en el motor de financiamiento para modernizar la infraestructura digital del hotel sin tocar presupuesto.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS / AUTHORITY -->
+  <section class="authority-section">
+    <div class="container">
+      <div class="section-label reveal" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);color:#fff">Efectividad Demostrada</div>
+      <h2 class="section-title reveal reveal-delay-1" style="color:#fff; margin-top: 0.5rem;">Sólida experiencia tecnológica en hotelería</h2>
+      
+      <div class="authority-grid">
+        <div class="auth-stat reveal reveal-delay-1">
+          <div class="auth-num" data-count="7">0</div>
+          <div class="auth-label">Años de experiencia en IA y desarrollo</div>
+        </div>
+        <div class="auth-stat reveal reveal-delay-2">
+          <div class="auth-num" data-count="75">0</div>
+          <div class="auth-label">Países y tendencias analizadas</div>
+        </div>
+        <div class="auth-stat reveal reveal-delay-3">
+          <div class="auth-num" data-count="100">0</div>
+          <div class="auth-label">Hoteles y marcas analizadas</div>
+        </div>
+      </div>
+      <p class="reveal">Optimizando procesos de reservas y capacitación digital con soluciones ágiles y listas para producción.</p>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section">
+    <div class="container">
+      <div class="section-label reveal">El Proceso</div>
+      <h2 class="section-title reveal reveal-delay-1">Cómo funciona el intercambio</h2>
+      <p class="section-sub reveal reveal-delay-2">Cuatro pasos transparentes que van desde esta propuesta hasta la entrega de valor.</p>
+      
+      <div class="steps-grid">
+        <div class="step-card reveal reveal-delay-1">
+          <div class="step-num">1</div>
+          <h3>1. Sesión de Alineación</h3>
+          <p>Definimos con la dirección y el equipo de marketing los entregables prioritarios (p. ej., flujo de WhatsApp o entrenamiento de IA).</p>
+        </div>
+        <div class="step-card reveal reveal-delay-2">
+          <div class="step-num">2</div>
+          <h3>2. Acuerdo de Fechas</h3>
+          <p>Establecemos las noches de alojamiento (habitaciones estándar o disponibles) durante periodos coordinados de baja ocupación.</p>
+        </div>
+        <div class="step-card reveal reveal-delay-3">
+          <div class="step-num">3</div>
+          <h3>3. Estancia y Trabajo</h3>
+          <p>Nos hospedamos en el Courtyard, dictamos las capacitaciones en directo, configuramos los sistemas y probamos los flujos con su personal.</p>
+        </div>
+        <div class="step-card reveal reveal-delay-4">
+          <div class="step-num">4</div>
+          <h3>4. Entrega de Valor</h3>
+          <p>Dejamos herramientas en producción, plantillas y equipo entrenado para incrementar la conversión. Check-out exitoso.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHRASES -->
+  <section class="quotes-section">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 3.5rem;">
+        <div class="section-label reveal">Filosofía Roam</div>
+        <h2 class="section-title reveal reveal-delay-1">¿Por qué este modelo tiene sentido?</h2>
+      </div>
+      
+      <div class="quotes-grid">
+        <div class="quote-card reveal reveal-delay-1">
+          <div class="quote-mark">“</div>
+          <p>Una habitación vacía por la noche no genera ingresos. Convertida en intercambio con Roam, financia la automatización e innovación de su hotel.</p>
+        </div>
+        <div class="quote-card reveal reveal-delay-2">
+          <div class="quote-mark">“</div>
+          <p>No buscamos un intercambio pasivo. Venimos a inyectar herramientas ágiles y modernas en los flujos diarios del hotel.</p>
+        </div>
+        <div class="quote-card reveal reveal-delay-3">
+          <div class="quote-mark">“</div>
+          <p>Financie capacitación de alto nivel y automatizaciones operativas con inventario no vendido, sin afectar su flujo de caja corporativo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROUTE / PRICE TABLE -->
+  <section class="ruta-section" id="ruta">
+    <div class="container">
+      <div class="section-label reveal">Disponibilidad en Sinaloa</div>
+      <h2 class="section-title reveal reveal-delay-1">Nuestra Ruta y Opciones</h2>
+      
+      <div class="ruta-top">
+        <div class="ruta-desc reveal reveal-delay-2">
+          <p>Roam opera de dos maneras para ofrecer la máxima flexibilidad a propiedades premium:</p>
+          <p>Cuando estamos <strong>"En Ruta"</strong> (planeando visitas a Mazatlán, Sinaloa), abrimos un cupo limitado para hoteles seleccionados mediante el modelo de <strong>Intercambio por Hospedaje</strong> (cero-cash).</p>
+          <p>Si la propiedad requiere asistencia inmediata fuera de nuestro calendario de ruta, prestamos los mismos servicios en formato de <strong>Consultoría Privada Corporativa</strong> estándar.</p>
+          
+          <div class="ruta-badge-row">
+            <span class="ruta-badge">🗺️ En Ruta → Intercambio de Habitaciones</span>
+            <span class="ruta-badge accent">🌐 Fuera de Ruta → Tarifa de Consultoría</span>
+          </div>
+        </div>
+        
+        <div class="reveal reveal-delay-3">
+          <p class="price-table-title">Valores de Referencia Comerciales</p>
+          <div class="price-table-wrap">
+            <table class="price-table">
+              <thead>
+                <tr>
+                  <th>Servicio / Entregable</th>
+                  <th>Tarifa Estándar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Análisis de Oportunidades y Conversión Directa</td>
+                  <td>750 €</td>
+                </tr>
+                <tr>
+                  <td>Taller de Capacitación en IA Generativa para Staff</td>
+                  <td>3,500 €</td>
+                </tr>
+                <tr>
+                  <td>Diseño de Guiones y Estructura de Contenido Profesional</td>
+                  <td>2,000 €</td>
+                </tr>
+                <tr>
+                  <td>Configuración y Flujo de Atención por WhatsApp (IA/Semi-Auto)</td>
+                  <td>7,500 €</td>
+                </tr>
+                <tr class="pack-row">
+                  <td>Pack Integrado Roam (Entrenamiento + Conversión + WhatsApp + Contenido)</td>
+                  <td>11,000 €</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="ruta-footer reveal">
+        <div class="ruta-footer-left">
+          <div class="ruta-footer-icon">✨</div>
+          <div>
+            <h4>Oportunidad de Intercambio Activa</h4>
+            <p>Mazatlán está contemplado en nuestro calendario. Viabilidad de pago 100% mediante habitaciones vacías.</p>
+          </div>
+        </div>
+        <a href="https://wa.me/34601108311?text=Hola%20Pau%2C%20vi%20la%20propuesta%20de%20Roam%20para%20el%20Courtyard%20by%20Marriott%20Mazatl%C3%A1n" class="btn-primary" target="_blank">Consultar Calendario de Ruta</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- YOUTUBE SECTION -->
+  <section style="background: var(--bg2); padding: 5rem 2rem; text-align: center; border-top: 1px solid var(--border);">
+    <div class="container">
+      <div class="section-label reveal">Conoce al Fundador</div>
+      <h2 class="section-title reveal reveal-delay-1">Inteligencia Artificial Aplicada</h2>
+      <p class="section-sub reveal reveal-delay-2" style="margin: 0 auto 2.5rem;">
+        Nuestro fundador Pau Martí comparte ideas, casos de estudio en hotelería y aplicaciones prácticas de tecnología de punta en su canal de divulgación.
+      </p>
+      <a href="https://www.youtube.com/@paumartifelip/videos" target="_blank" class="reveal reveal-delay-3" style="display: inline-flex; align-items: center; gap: 0.8rem; background: #ff0000; color: #fff; padding: 0.95rem 2rem; border-radius: var(--r); font-size: 0.95rem; font-weight: 700; text-decoration: none; transition: all 0.25s var(--ease);" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 25px rgba(255,0,0,0.25)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93 .502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        Ver contenido de Pau Martí
+      </a>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="section-label reveal" style="margin-bottom: 1.5rem;">Próximos Pasos</div>
+      <h2 class="reveal reveal-delay-1">Financie la innovación tecnológica con inventario disponible</h2>
+      <p class="reveal reveal-delay-2">Hablemos por WhatsApp para revisar las semanas sugeridas de baja ocupación y afinar los entregables prioritarios para el hotel.</p>
+      <div class="cta-btns reveal reveal-delay-3">
+        <a href="https://wa.me/34601108311?text=Hola%20Pau%2C%20vi%20la%20propuesta%20de%20Roam%20para%20el%20Courtyard%20by%20Marriott%20Mazatl%C3%A1n" class="btn-wa" target="_blank">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chatear por WhatsApp con Pau Martí
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Roam <span>× Courtyard Mazatlán</span></div>
+    <p class="footer-desc">
+      Innovación operativa en hospitalidad mediante automatizaciones ágiles, incremento de conversión directa y formación tecnológica práctica.
+    </p>
+    <div class="footer-links">
+      <a href="#propuesta">La propuesta</a>
+      <a href="#que-ofrecemos">Qué ofrecemos</a>
+      <a href="#metodo">Método ROAM</a>
+      <a href="#ruta">Modelo de Intercambio</a>
+      <a href="https://wa.me/34601108311?text=Hola%20Pau%2C%20vi%20la%20propuesta%20de%20Roam%20para%20el%20Courtyard%20by%20Marriott%20Mazatl%C3%A1n" target="_blank">Contacto Directo</a>
+    </div>
+    <p class="footer-copy">© 2026 Roam · Propuesta Técnica Confidencial para Courtyard by Marriott Mazatlán Beach Resort</p>
+  </footer>
+
+  <script>
+    // Hamburger menu toggle
+    const ham = document.getElementById('hamburger');
+    const mob = document.getElementById('mobileMenu');
+    
+    ham.addEventListener('click', () => {
+      ham.classList.toggle('open');
+      mob.classList.toggle('open');
+    });
+    
+    function closeMob() {
+      ham.classList.remove('open');
+      mob.classList.remove('open');
+    }
+    
+    document.addEventListener('click', e => {
+      if (!ham.contains(e.target) && !mob.contains(e.target)) {
+        closeMob();
+      }
+    });
+
+    // Intersection Observer for Reveal elements
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Smooth counter animation
+    function animateCount(el) {
+      const target = parseInt(el.dataset.count);
+      const suffix = target === 100 ? '+' : target === 75 ? '+' : '+';
+      const duration = 2000;
+      const start = performance.now();
+      
+      function step(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3); // Cubic ease out
+        el.textContent = Math.floor(eased * target) + (progress === 1 ? suffix : '');
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    const counterObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animateCount(e.target);
+          counterObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    
+    document.querySelectorAll('[data-count]').forEach(el => counterObs.observe(el));
+  </script>
+</body>
+</html>
